@@ -5,7 +5,7 @@ local golang = {}
 --------------------------------------------------------------------------------
 
 golang.plugins = {
-	{ "leoluz/nvim-dap-go" }, -- debugging,
+  { "leoluz/nvim-dap-go" }, -- debugging,
 }
 
 --------------------------------------------------------------------------------
@@ -13,22 +13,22 @@ golang.plugins = {
 --------------------------------------------------------------------------------
 
 golang.mason = {
-	-- LSP
-	"gopls",
+  -- LSP
+  "gopls",
 
-	-- Formatters
-	"goimports",
-	"gofumpt",
+  -- Formatters
+  "goimports",
+  "gofumpt",
 
-	-- Lint
-	"staticcheck",
+  -- Lint
+  "staticcheck",
 
-	-- code_actions
-	"gomodifytags",
-	"impl",
+  -- code_actions
+  "gomodifytags",
+  "impl",
 
-	-- dap
-	"delve",
+  -- dap
+  "delve",
 }
 
 --------------------------------------------------------------------------------
@@ -36,11 +36,15 @@ golang.mason = {
 --------------------------------------------------------------------------------
 
 golang.lsp = function(lspconfig, capabilities, on_attach)
-	lspconfig.gopls.setup({
-		capabilities = capabilities,
-		on_attach = on_attach,
-		filetypes = { "go" },
-	})
+  lspconfig.gopls.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+    filetypes = { "go" },
+  })
+
+  require("language.security").tools.enable_sonarlint_analyzer(
+    vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar")
+  )
 end
 
 --------------------------------------------------------------------------------
@@ -48,7 +52,7 @@ end
 --------------------------------------------------------------------------------
 
 golang.debugging = function(dap)
-	require("dap-go").setup()
+  require("dap-go").setup()
 end
 
 --------------------------------------------------------------------------------
@@ -56,16 +60,16 @@ end
 --------------------------------------------------------------------------------
 
 golang.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
-	return {
-		formatting.gofmt,
-		formatting.goimports,
-		formatting.gofumpt,
+  return {
+    formatting.gofmt,
+    formatting.goimports,
+    formatting.gofumpt,
 
-		diagnostics.staticcheck,
+    diagnostics.staticcheck,
 
-		code_actions.gomodifytags,
-		code_actions.impl,
-	}
+    code_actions.gomodifytags,
+    code_actions.impl,
+  }
 end
 
 return golang

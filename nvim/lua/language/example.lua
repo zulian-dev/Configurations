@@ -75,7 +75,7 @@ local exampleLang = {}
 -- Options ---------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
--- markdown.options = function()
+-- exampleLang.options = function()
 --   vim.api.nvim_create_autocmd("FileType", {
 --     pattern = {"exampleLang"},
 --     callback = function()
@@ -83,5 +83,15 @@ local exampleLang = {}
 --     end
 --   })
 -- end
+
+--------------------------------------------------------------------------------
+-- Tools -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+-- exampleLang.tools = {
+--  say_hello = function()
+--    print("example")
+--  end
+-- }
 
 return exampleLang
