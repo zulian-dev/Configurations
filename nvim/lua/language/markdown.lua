@@ -83,6 +83,7 @@ markdown.plugins = {
     config = function()
       -- vim.g.ale_fix_on_save = 1
       vim.g.ale_fixers = {
+        -- brew install pandoc
         markdown = { "pandoc" },
       }
       vim.g.ale_linters_explicit = 1
@@ -110,14 +111,14 @@ markdown.plugins = {
     config = function()
       require("colorizer").setup({
         markdown = {
-          RGB = true,     -- #RGB hex codes
-          RRGGBB = true,  -- #RRGGBB hex codes
-          names = false,  -- "Name" codes like Blue
-          RRGGBBAA = false, -- #RRGGBBAA hex codes
-          rgb_fn = false, -- CSS rgb() and rgba() functions
-          hsl_fn = false, -- CSS hsl() and hsla() functions
-          css = false,    -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-          css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+          RGB = true,          -- #RGB hex codes
+          RRGGBB = true,       -- #RRGGBB hex codes
+          names = false,       -- "Name" codes like Blue
+          RRGGBBAA = false,    -- #RRGGBBAA hex codes
+          rgb_fn = false,      -- CSS rgb() and rgba() functions
+          hsl_fn = false,      -- CSS hsl() and hsla() functions
+          css = false,         -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+          css_fn = false,      -- Enable all CSS *functions*: rgb_fn, hsl_fn
           -- Available modes: foreground, background
           mode = "background", -- Set the display mode.
         },
@@ -128,6 +129,7 @@ markdown.plugins = {
   -- Markdown Preview
   {
     "iamcco/markdown-preview.nvim",
+    enabled = false,
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     build = "cd app && npm install",
     init = function()
@@ -135,6 +137,34 @@ markdown.plugins = {
     end,
     ft = { "markdown" },
   },
+
+-- {
+--     'MeanderingProgrammer/render-markdown.nvim',
+--     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+--     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+--     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+--     ---@module 'render-markdown'
+--     ---@type render.md.UserConfig
+--     opts = {},
+-- },
+
+
+  {
+    "OXY2DEV/markview.nvim",
+    lazy = false, -- Recommended
+    ft = "markdown", -- If you decide to lazy-load anyway
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
+    },
+    config = function()
+      require("colorizer").setup({
+        -- code_blocks = {
+        --   style = "simple",
+        -- },
+      })
+    end
+  }
 }
 
 --------------------------------------------------------------------------------
