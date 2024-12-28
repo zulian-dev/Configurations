@@ -30,6 +30,7 @@ function show-options() {
     clojure "Clojure" off \
     php "PHP" off \
     security "Security" on \
+    none "None" off \
     2>$tempfile
 
   # if no options selected, show dialog asking to confirm options,
