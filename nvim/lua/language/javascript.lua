@@ -29,6 +29,7 @@ local typescript_filetypes = {
 javascript.plugins = {
   {
     "microsoft/vscode-js-debug",
+    enabled = false,
     build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
   },
   {
@@ -168,7 +169,7 @@ end
 --- Debugging ------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-javascript.debugging = function(dap)
+javascript.DIASBLED_debugging = function(dap)
   if not dap.adapters["pwa-node"] then
     dap.adapters["pwa-node"] = {
       type = "server",
