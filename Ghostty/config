@@ -1,0 +1,6 @@
+theme = dracula
+font-family = "VictorMono Nerd Font Mono"
+# font-family = "CaskaydiaCove Nerd Font"
+font-size = 16
+background-opacity = 0.95
+
