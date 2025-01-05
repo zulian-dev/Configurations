@@ -97,6 +97,7 @@
   "vim-better-comments": { "branch": "master", "commit": "39f92579dd0ffb6e199e398f590aeb1480e96558" },
   "vim-css-color": { "branch": "master", "commit": "14fd934cdd9ca1ac0e53511094e612eb9bace373" },
   "vim-emoji": { "branch": "master", "commit": "9ed6515401a6e20a9781ba508db7d67a5e4e231f" },
+  "vim-fugitive": { "branch": "master", "commit": "174230d6a7f2df94705a7ffd8d5413e27ec10a80" },
   "vim-rest-console": { "branch": "master", "commit": "7b407f47185468d1b57a8bd71cdd66c9a99359b2" },
   "vim-spell-pt-br": { "branch": "master", "commit": "3d7eb3098de77b86c8a880354b442b3d84b18a72" },
   "vim-visual-multi": { "branch": "master", "commit": "a6975e7c1ee157615bbc80fc25e4392f71c344d4" },
