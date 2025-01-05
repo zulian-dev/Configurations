@@ -1,20 +1,21 @@
 #!/bin/bash
 
-# Mount checkbox selection with dialog
-# using this options
-# markdown, golang, rust, java, elixir, lua, javascript, gdscript, clojure, security, php
-# and print the response using echo
-
 # Check if dialog is installed
 if ! [ -x "$(command -v dialog)" ]; then
   echo 'Error: dialog is not installed.' >&2
   exit 1
 fi
 
+# Save the original vim arguments, like files to open
+originalArguments=$@
+
+# Create a temp file to store the checkbox selection
 tempfile=$(mktemp /tmp/vim_laucher_checkbox_selection.XXXXXXXXXXXXXXXXXXXXXXXX)
 
+# Path to nvim executable
 vimExecPath="/opt/homebrew/bin/nvim"
 
+# Function to show dialog options
 function show-options() {
   dialog --checklist "Select the languages you want to code:" 20 40 10 \
     markdown "Markdown" off \
@@ -26,16 +27,15 @@ function show-options() {
     rust "Rust" off \
     java "Java" off \
     lua "Lua" off \
+    bash "Bash" off \
     gdscript "GDScript" off \
     clojure "Clojure" off \
     php "PHP" off \
+    zig "Zig" off \
     security "Security" on \
     none "None" off \
     2>$tempfile
 
-  # if no options selected, show dialog asking to confirm options,
-  # if yes, show dialog sayn "root" was selected
-  # if no, show options again
   if [[ $(cat $tempfile) == "" ]]; then
     dialog --yesno "No options selected. Do you want to select root?" 10 40
     if [ $? -eq 0 ]; then
@@ -47,9 +47,10 @@ function show-options() {
   else
     lauche-nvim
   fi
-
 }
 
+# Function to launch nvim with the selected languages
+# inside an env variable in this format "php,html,javascript,css"
 function lauche-nvim() {
   langsFormated=$(cat $tempfile | sed 's/\ /\,/g')
   export NVIMLANG=$langsFormated
@@ -59,7 +60,7 @@ function lauche-nvim() {
 
 function open-vim() {
   clear
-  $vimExecPath
+  $vimExecPath $originalArguments
 }
 
 show-options

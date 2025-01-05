@@ -28,6 +28,7 @@ local disponible_languages = {
   "python",
   "html",
   "css",
+  "zig",
 }
 
 if nvimlang then
