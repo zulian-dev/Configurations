@@ -1,5 +1,5 @@
-if os.getenv("NVIMLANG") == 'none' then
-	return false
+if os.getenv("NVIMLANG") == "none" then
+  return false
 end
 
 require("config.cron")
