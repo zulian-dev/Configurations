@@ -1,75 +1,98 @@
 from textual.app import App, ComposeResult
-from textual.containers import Horizontal
-from textual.widgets import Static, Switch, Button, Header, Footer, Label
+from textual.containers import Container, VerticalScroll
+from textual.widgets import Static, Checkbox, Button, Footer, Header, Static
 
 
-# 		markdown "Markdown" off \
-# 		javascript "Javascript" off \
-# 		elixir "Elixir" off \
-# 		golang "Golang" off \
-# 		rust "Rust" off \
-# 		java "Java" off \
-# 		lua "Lua" off \
-# 		gdscript "GDScript" off \
-# 		clojure "Clojure" off \
-# 		php "PHP" off \
-# 		security "Security" on \
+import os
+
+import subprocess
+
+
+
 languages = {
-    "markdown": {"enabled": False},
-    "javascript": {"enabled": False},
-    "elixir": {"enabled": False},
-    "golang": {"enabled": False},
-    "rust": {"enabled": False},
-    "java": {"enabled": False},
-    "lua": {"enabled": False},
-    "gdscript": {"enabled": False},
-    "clojure": {"enabled": False},
-    "php": {"enabled": False},
-    "security": {"enabled": True},
+    "markdown": {"enabled": False, "icon": "", "color": "blue"},
+    "elixir": {"enabled": False, "icon": "", "color": "purple"},
+    "javascript": {"enabled": False, "icon": "", "color": "yellow"},
+    "html": {"enabled": False, "icon": "", "color": "orange"},
+    "css": {"enabled": False, "icon": "", "color": "blue"},
+    "golang": {"enabled": False, "icon": "", "color": "blue", "ligatures":["security"]},
+    "rust": {"enabled": False, "icon": "", "color": "orange"},
+    "java": {"enabled": False, "icon": "", "color": "red"},
+    "lua": {"enabled": False, "icon": "", "color": "blue"},
+    "bash": {"enabled": False, "icon": "", "color": "gray"},
+    "gdscript": {"enabled": False, "icon": "", "color": "blue"},
+    "clojure": {"enabled": False, "icon": "", "color": "green"},
+    "php": {"enabled": False, "icon":"", "color": "purple", "ligatures":["html", "css", "javascript", "security"]}, 
+    "zig": {"enabled": False, "icon": "", "color": "orange"},
+    "security": {"enabled": True, "icon": "󰒃", "color": "green"},
+    "none": {"enabled": False, "icon": "󰢤", "color": "gray"},
 }
 
+selectedOptions = []
 
-components = {}
-
-
-class SwitchApp(App):
-    # label = None
-    TITLE = "TESTE"
-    SUB_TITLE = "BAHH"
+class LanguageSelectorApp(App):
+    CSS_PATH = "style.tcss"
 
     def compose(self) -> ComposeResult:
+        """Compõe a interface da aplicação."""
+        yield Header("Selecione as linguagens de programação que deseja usar:") 
 
-        yield Header()
-
-        yield Static("[b]Select languages\n", classes="label")
-
-        for language in languages:
-            config = languages[language]
-
-            components[language] = Switch(id=language, value=config["enabled"])
-
-            yield Horizontal(
-                Static(f"{language}: ", classes="label"),
-                components[language],
-                classes="container",
+        for lang in languages:
+            yield Checkbox(
+                "[" + languages[lang]["color"] + "] " 
+                    + languages[lang]["icon"] + " " 
+                    + lang.capitalize(),
+                id=lang,
+                classes="box"
             )
-
-        yield Button("Default")
-
+            
+        yield Button("Ok", id="ok_button")
+        yield Button("Fechar", id="close_button")
         yield Footer()
+        
+
+    def on_mount(self) -> None:
+        """Configura a interface ao iniciar."""
+        self.query_one("#ok_button").focus()
+
+    def on_checkbox_changed(self, event: Checkbox.Changed) -> None:
+        """Atualiza a lista de opções selecionadas quando uma checkbox muda."""
+        if event.checkbox.value:
+            if event.checkbox.id not in selectedOptions:
+                selectedOptions.append(event.checkbox.id)
+               
+        else:
+            if event.checkbox.id in selectedOptions:
+                selectedOptions.remove(event.checkbox.id)
+
+        self.process_ligatures(event.checkbox.id, event.checkbox.value)
+
+    def process_ligatures(self, paramlang, isChecked): 
+        if languages[paramlang].get("ligatures"):
+            for lang in languages[paramlang]["ligatures"]:
+                checkbox = self.query_one(f"#{lang}", Checkbox)
+                
+                if isChecked and lang not in selectedOptions:
+                    selectedOptions.append(lang)
+                    checkbox.value = True
+                
+                else:
+                    selectedOptions.remove(lang) 
+                    checkbox.value = False
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        selected = []
-        for component in components:
-            if components[component].value:
-                selected.append(components[component].id)
-        selected = ",".join(selected)
+        if event.button.id == "ok_button":
+            self.exit(
+                self.format_output(selectedOptions)
+            )
+        elif event.button.id == "close_button":
+            self.exit()
 
-        self.title = "AAA"
-        self.sub_title = selected
+    def format_output(self, selectedOptions):
+        formated = ",".join(selectedOptions).lower()
+        return formated
 
-
-app = SwitchApp(css_path="switch.tcss")
-if __name__ == "__main__":
-    retorno = app.run()
-    print(retorno)
+if __name__ == "__main__" :
+    retorno = LanguageSelectorApp().run()
+    os.environ["NVIMLANG"] = retorno
+    subprocess.run(["/opt/homebrew/bin/nvim"]) 
