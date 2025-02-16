@@ -110,6 +110,13 @@ install "zoxide"
 install "imagemagick"
 install "font-symbols-only-nerd-font"
 
+# Fonts
+install "font-victor-mono"
+install "font-victor-mono-nerd-font"
+install "font-hack-nerd-font"
+
+install "nerdfetch"
+
 ###############################################################################
 
 # info "Configurações do git"
@@ -132,7 +139,6 @@ info "Configuração copiadas!"
 ###############################################################################
 
 install "neovim"
-install "font-hack-nerd-font"
 
 # Cria link simbolicos as configurações do nvim,
 # para poder gerenciar elas pelo repositorio git.
