@@ -149,6 +149,7 @@ return {
 
   -- my test
   { "zulian-dev/theme-sedona.vim",      name = "Sedona",              colorscheme = "sedona" },
+  { "zulian-dev/theme-neon-vommit.vim", name = "Neon Vommit",         colorscheme = "neon-vommit" },
 
   -- Oxocarbon
   { "nyoom-engineering/oxocarbon.nvim", name = "Oxocarbon",           colorscheme = "oxocarbon" },
