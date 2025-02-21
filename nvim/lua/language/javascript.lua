@@ -107,12 +107,27 @@ javascript.mason = {
 --------------------------------------------------------------------------------
 
 javascript.lsp = function(lspconfig, capabilities, on_attach)
+  local mason_registry = require("mason-registry")
+
+  local vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
+      .. "/node_modules/@vue/language-server"
+
   lspconfig.tsserver.setup({
     capabilities = capabilities,
     on_attach = on_attach,
     filetypes = typescript_filetypes,
-    --filetypes = javascript_filetypes,
+
     cmd = { vim.fn.expand("$MASON/bin/typescript-language-server"), "--stdio" },
+
+    init_options = {
+      plugins = {
+        {
+          name = "@vue/typescript-plugin",
+          location = vue_language_server_path,
+          languages = { "vue" },
+        },
+      },
+    },
     --  init_options = {
     --  	typescript = {
     --  		format = {
@@ -126,7 +141,13 @@ javascript.lsp = function(lspconfig, capabilities, on_attach)
   lspconfig.eslint.setup({
     filetypes = javascript_filetypes,
     capabilities = capabilities,
-    on_attach = on_attach,
+    on_attach = function(client, bufnr)
+      on_attach(client, bufnr)
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = bufnr,
+        command = "EslintFixAll",
+      })
+    end,
     cmd = { "vscode-eslint-language-server", "--stdio" },
   })
 end
@@ -143,6 +164,7 @@ javascript.null_ls = function(null_ls, formatting, diagnostics, completion, code
   end
 
   return {
+    formatting.prettier,
     -- formatting.prettier,
     -- null_ls.builtins.diagnostics.eslint.with({
     -- 	dynamic_command = dynamic_command_function,
