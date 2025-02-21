@@ -40,9 +40,12 @@ return {
   -- Indentation rainbown
   {
     "lukas-reineke/indent-blankline.nvim",
+    dependencies = {
+      "TheGLander/indent-rainbowline.nvim",
+    },
     event = "LazyFile",
     main = "ibl",
-    opts = function()
+    opts = function(_, opts)
       Snacks.toggle({
         name = "Indention Guides",
         get = function()
@@ -80,6 +83,22 @@ return {
 
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
+      require("indent-rainbowline").make_opts(opts, {
+        -- How transparent should the rainbow colors be. 1 is completely opaque, 0 is invisible. 0.07 by default
+        color_transparency = 0.15,
+        -- The 24-bit colors to mix with the background. Specified in hex.
+        -- { 0xffff40, 0x79ff79, 0xff79ff, 0x4fecec, } by default
+        colors = {
+          0xff0000, -- Vermelho
+          0xff7f00, -- Laranja
+          0xffff00, -- Amarelo
+          0x00ff00, -- Verde
+          0x0000ff, -- Azul
+          0x4b0082, -- Índigo
+          0x9400d3, -- Violeta
+        },
+      })
+
       return {
         indent = {
           char = "│",
@@ -110,6 +129,47 @@ return {
         },
       }
     end,
-    config = function() end,
   },
+  {
+    "tomasky/bookmarks.nvim",
+    enabled = false,
+    -- after = "telescope.nvim",
+    event = "VimEnter",
+    config = function()
+      require("bookmarks").setup({
+        -- sign_priority = 8,  --set bookmark sign priority to cover other sign
+        save_file = vim.fn.expand("$HOME/.bookmarks"), -- bookmarks save file path
+        keywords = {
+          ["@t"] = "☑️ ", -- mark annotation startswith @t ,signs this icon as `Todo`
+          ["@w"] = "⚠️ ", -- mark annotation startswith @w ,signs this icon as `Warn`
+          ["@f"] = "⛏ ", -- mark annotation startswith @f ,signs this icon as `Fix`
+          ["@n"] = " ", -- mark annotation startswith @n ,signs this icon as `Note`
+        },
+        on_attach = function(bufnr)
+          local bm = require("bookmarks")
+          local map = vim.keymap.set
+          -- map("n", "mm", bm.bookmark_toggle) -- add or remove bookmark at current line
+          -- map("n", "mi", bm.bookmark_ann) -- add or edit mark annotation at current line
+          -- map("n", "mc", bm.bookmark_clean) -- clean all marks in local buffer
+          -- map("n", "mn", bm.bookmark_next) -- jump to next mark in local buffer
+          -- map("n", "mp", bm.bookmark_prev) -- jump to previous mark in local buffer
+          -- map("n", "ml", bm.bookmark_list) -- show marked file list in quickfix window
+          -- map("n", "mx", bm.bookmark_clear_all) -- removes all bookmarks
+          map("n", "mm", bm.bookmark_toggle, { desc = "add or remove bookmark at current line" })
+          map("n", "mi", bm.bookmark_ann, { desc = "add or edit mark annotation at current line" })
+          map("n", "mc", bm.bookmark_clean, { desc = "clean all marks in local buffer" })
+          map("n", "mn", bm.bookmark_next, { desc = "jump to next mark in local buffer" })
+          map("n", "mp", bm.bookmark_prev, { desc = "jump to previous mark in local buffer" })
+          map("n", "ml", bm.bookmark_list, { desc = "show marked file list in quickfix window" })
+          map("n", "mx", bm.bookmark_clear_all, { desc = "removes all bookmarks" })
+        end,
+      })
+    end,
+  },
+  -- {
+  --   "arakkkkk/switchpanel.nvim",
+  -- config = function()
+  -- 	require("switchpanel").setup({})
+  -- end,
+  -- }
 }
