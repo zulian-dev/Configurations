@@ -75,39 +75,39 @@ markdown.plugins = {
   -- Spell check pt-br  (For all languages)
   { "mateusbraga/vim-spell-pt-br" },
 
-  -- ALE for markdown fix indentation
-  {
-    "dense-analysis/ale",
-    event = "VeryLazy",
-    ft = { "markdown" },
-    config = function()
-      -- vim.g.ale_fix_on_save = 1
-      vim.g.ale_fixers = {
-        -- brew install pandoc
-        markdown = { "pandoc" },
-      }
-      vim.g.ale_linters_explicit = 1
+  --   -- ALE for markdown fix indentation
+  --   {
+  --     "dense-analysis/ale",
+  --     event = "VeryLazy",
+  --     ft = { "markdown" },
+  --     config = function()
+  --       -- vim.g.ale_fix_on_save = 1
+  --       vim.g.ale_fixers = {
+  --         -- brew install pandoc
+  --         markdown = { "pandoc" },
+  --       }
+  --       vim.g.ale_linters_explicit = 1
 
-      local bufopts = { noremap = true, silent = true, buffer = bufnr }
-      -- vim.keymap.set("n", "<Leader>p", ":ALEFix<CR>", bufopts)
+  --       local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  --       -- vim.keymap.set("n", "<Leader>p", ":ALEFix<CR>", bufopts)
 
-      vim.keymap.set("n", "<Leader>p", function()
-        vim.cmd("ALEFix") -- Executa ALEFix
+  --       vim.keymap.set("n", "<Leader>p", function()
+  --         vim.cmd("ALEFix") -- Executa ALEFix
 
-        -- Aguarda o ALEFix terminar antes de rodar as substituições
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "ALEFixPost",
-          once = true,                     -- Garante que o comando execute apenas uma vez
-          callback = function()
-            vim.cmd([[silent! %s/``` \+/```/g]]) -- Remove espaços extras após ```
-            vim.cmd([[silent! %s/&#10;/\r/g]]) -- Substitui &#10; por quebra de linha
-          end,
-        })
-      end, bufopts)
-      -- vim.keymap.set('n', '<Leader>pa', ':ALECodeAction<CR>', bufopts)
-      -- vim.keymap.set('n', '<Leader>l', ':ALELint<CR>', bufopts)
-    end,
-  },
+  --         -- Aguarda o ALEFix terminar antes de rodar as substituições
+  --         vim.api.nvim_create_autocmd("User", {
+  --           pattern = "ALEFixPost",
+  --           once = true,                     -- Garante que o comando execute apenas uma vez
+  --           callback = function()
+  --             vim.cmd([[silent! %s/``` \+/```/g]]) -- Remove espaços extras após ```
+  --             vim.cmd([[silent! %s/&#10;/\r/g]]) -- Substitui &#10; por quebra de linha
+  --           end,
+  --         })
+  --       end, bufopts)
+  --       -- vim.keymap.set('n', '<Leader>pa', ':ALECodeAction<CR>', bufopts)
+  --       -- vim.keymap.set('n', '<Leader>l', ':ALELint<CR>', bufopts)
+  --     end,
+  --   },
 
   -- Emoji support
   {
@@ -253,8 +253,21 @@ end
 --------------------------------------------------------------------------------
 
 markdown.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
+  -- Criar um formatador customizado para Pandoc
+  local pandoc_formatter = {
+    method = null_ls.methods.FORMATTING,
+    filetypes = { "markdown" },
+    generator = null_ls.formatter({
+      command = "pandoc",
+      args = { "--to=markdown" }, -- Ajuste conforme necessário
+      to_stdin = true,         -- Permite formatar diretamente o buffer
+    }),
+  }
+
+  null_ls.register(pandoc_formatter)
+
   return {
-    null_ls.builtins.formatting.markdownlint,
+    -- null_ls.builtins.formatting.markdownlint,
     null_ls.builtins.diagnostics.markdownlint.with({
       filetypes = { "markdown" },
       extra_args = {
