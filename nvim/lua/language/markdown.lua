@@ -259,8 +259,15 @@ markdown.null_ls = function(null_ls, formatting, diagnostics, completion, code_a
     filetypes = { "markdown" },
     generator = null_ls.formatter({
       command = "pandoc",
-      args = { "--to=markdown" }, -- Ajuste conforme necessário
-      to_stdin = true,         -- Permite formatar diretamente o buffer
+      args = {
+        "--to=markdown",
+        "--columns=80",
+        "--from=gfm",
+        "--to=gfm",
+        -- "--wrap=preserve",
+        "--standalone",
+      },
+      to_stdin = true, -- Permite formatar diretamente o buffer
     }),
   }
 
