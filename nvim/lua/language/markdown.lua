@@ -75,7 +75,6 @@ markdown.plugins = {
   -- Spell check pt-br  (For all languages)
   { "mateusbraga/vim-spell-pt-br" },
 
-
   -- Emoji support
   {
     "junegunn/vim-emoji",
@@ -220,25 +219,36 @@ end
 --------------------------------------------------------------------------------
 
 markdown.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
+  local helpers = require("null-ls.helpers")
+
   -- Criar um formatador customizado para Pandoc
-  local pandoc_formatter = {
+  null_ls.register({
     method = null_ls.methods.FORMATTING,
     filetypes = { "markdown" },
-    generator = null_ls.formatter({
+    generator = helpers.generator_factory({
       command = "pandoc",
       args = {
         "--to=markdown",
         "--columns=80",
         "--from=gfm",
         "--to=gfm",
-        -- "--wrap=preserve",
         "--standalone",
       },
-      to_stdin = true, -- Permite formatar diretamente o buffer
+      to_stdin = true,
+      format = "raw", -- Processamos o output inteiro como uma string
+      on_output = function(params, done)
+        print("Passou: ")
+        if params.output then
+          -- Substitui todas as ocorrências de &#10; por quebras de linha reais
+          local modified_output = params.output:gsub("&#10;", "\n")
+          -- Retorna o novo texto para ser aplicado no buffer
+          done({ { text = modified_output } })
+        else
+          done() -- Não faz nada se não houver saída
+        end
+      end,
     }),
-  }
-
-  null_ls.register(pandoc_formatter)
+  })
 
   return {
     -- null_ls.builtins.formatting.markdownlint,
