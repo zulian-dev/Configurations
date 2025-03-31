@@ -218,7 +218,7 @@ end
 -- Null LS ---------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-markdown.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
+markdown.null_ls = function(null_ls)
   local helpers = require("null-ls.helpers")
 
   -- Criar um formatador customizado para Pandoc
@@ -237,7 +237,6 @@ markdown.null_ls = function(null_ls, formatting, diagnostics, completion, code_a
       to_stdin = true,
       format = "raw", -- Processamos o output inteiro como uma string
       on_output = function(params, done)
-        print("Passou: ")
         if params.output then
           -- Substitui todas as ocorrências de &#10; por quebras de linha reais
           local modified_output = params.output:gsub("&#10;", "\n")
