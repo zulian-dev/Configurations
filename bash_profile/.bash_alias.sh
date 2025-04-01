@@ -1,4 +1,5 @@
 # #!/bin/bash
+# source /Users/luizzulian/Documents/git/Configurations/scripts/bash_loading_animations.sh
 
 # Remove warning messag
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
@@ -21,3 +22,6 @@ eval "$(zoxide init zsh)"
 
 # Show some information about the system
 nerdfetch
+
+alias node_modules_locator='find . -name "node_modules" -type d -prune -print | xargs du -chs'
+alias node_modules_remover='find . -name "node_modules" -type d -prune -print -exec rm -rf "{}" \;'
