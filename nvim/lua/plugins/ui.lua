@@ -97,6 +97,7 @@ return {
       "TheGLander/indent-rainbowline.nvim",
     },
   },
+
   -- {
   --   "lukas-reineke/indent-blankline.nvim",
   --   dependencies = {
@@ -189,7 +190,6 @@ return {
   --     }
   --   end,
   -- },
-  --
 
   ------------
   -- Bookmarks
@@ -243,7 +243,7 @@ return {
   -----------
   {
     "gorbit99/codewindow.nvim",
-    enabled = true,
+    enabled = false,
     config = function()
       local codewindow = require("codewindow")
       codewindow.setup({
