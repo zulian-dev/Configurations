@@ -36,6 +36,13 @@ function show-options() {
     none "None" off \
     2>$tempfile
 
+  # Verificar se o usuário cancelou ou pressionou ESC
+  if [ $? -ne 0 ]; then
+    clean-temp-file
+    clear
+    exit 0
+  fi
+
   if [[ $(cat $tempfile) == "" ]]; then
     dialog --yesno "No options selected. Do you want to select root?" 10 40
     if [ $? -eq 0 ]; then
