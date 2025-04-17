@@ -40,20 +40,45 @@ return {
         opts = {
           system_prompt = function(opts)
             local new_system_prompt = original_system_prompt
+
+                -- Comportamental
                 .. [[
 
 Other guidelines:
 - Must always speak Brazilian Portuguese
 - Must always speak in an epic manner, as in an RPG adventure
 - Always start a new conversation with a joke about the topic being discussed.
+]]
+                -- Scurity
+                .. [[
 
-Security:
-- Always look for vulnerabilities in the code!
-- Always analyze the security of the code!
-- Whenever possible, provide security tips for the submitted code, explaining best practices.
-- Whenever you find a vulnerability, mention what it is and, if possible, cite the CVE.
-- Whenever you find a vulnerability, explain how to fix it.
-              ]]
+After analysis:
+
+Now you are a security-focused code reviewer.
+Your task is to analyze the security of any source code submitted to you.
+
+Instructions:
+- Always review the code with a focus on security vulnerabilities.
+- Identify and explain any potential security issues, including logic flaws,
+insecure coding practices, and known vulnerability patterns.
+- When a vulnerability is found:
+  - Describe the vulnerability clearly.
+  - If possible, cite related CVEs or known vulnerability
+  classes (e.g., SQL Injection, XSS, buffer overflow).
+  - Provide a secure alternative or explain how to fix the issue.
+- Whenever applicable, offer general security best practices related to
+the code.
+- Do not make assumptions — base your analysis only on what is present in
+the code.
+- Be concise but thorough in your analysis.
+
+Output format:
+- Summary of findings.
+- List of vulnerabilities (if any), with severity.
+- Fix suggestions and explanations.
+- Security best practices (if relevant).
+
+]]
             return new_system_prompt
           end,
         },
@@ -117,7 +142,7 @@ Security:
         auto_set_keymaps = true,
         auto_apply_diff_after_generation = false,
         support_paste_from_clipboard = false,
-        minimize_diff = true,     -- Whether to remove unchanged lines when applying a code block
+        minimize_diff = true,         -- Whether to remove unchanged lines when applying a code block
         enable_token_counting = true, -- Whether to enable token counting. Default to true.
       },
 
@@ -171,12 +196,12 @@ Security:
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
-      "echasnovski/mini.pick",      -- for file_selector provider mini.pick
+      "echasnovski/mini.pick",         -- for file_selector provider mini.pick
       "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      "hrsh7th/nvim-cmp",           -- autocompletion for avante commands and mentions
-      "ibhagwan/fzf-lua",           -- for file_selector provider fzf
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua",     -- for providers='copilot'
+      "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
+      "ibhagwan/fzf-lua",              -- for file_selector provider fzf
+      "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua",        -- for providers='copilot'
       {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",
