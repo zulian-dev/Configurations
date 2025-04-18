@@ -37,7 +37,7 @@ Output format:
 return {
   {
     "github/copilot.vim",
-    enabled = false,
+    enabled = true,
     -- 'zbirenbaum/copilot.lua',
     config = function()
       vim.api.nvim_set_keymap("i", "<c-p>", "<Plug>(copilot-panel)", { noremap = true, silent = true })

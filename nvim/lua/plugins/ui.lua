@@ -97,6 +97,7 @@ return {
       "TheGLander/indent-rainbowline.nvim",
     },
   },
+
   -- {
   --   "lukas-reineke/indent-blankline.nvim",
   --   dependencies = {
@@ -189,7 +190,6 @@ return {
   --     }
   --   end,
   -- },
-  --
 
   ------------
   -- Bookmarks
