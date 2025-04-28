@@ -26,21 +26,7 @@ return {
       -- For Dracula theme
       vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { link = "Comment" })
 
-      -- signs = {
-      --   add = { text = "│" },
-      --   change = { text = "│" },
-      --   -- delete = { text = "󰍵" },
-      --   delete = { text = "╳" },
-      --   topdelete = { text = "‾" },
-      --   changedelete = { text = "~" },
-      --   untracked = { text = "│" },
-      -- },
-      --
-      -- current_line_blame = true,
-      -- current_line_blame_formatter = " -  <author>, <author_time:%R> - <summary>",
-
       gitsigns.setup({
-
         signs = {
           add = { text = "┃" },
           change = { text = "┃" },
