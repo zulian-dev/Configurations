@@ -1,6 +1,7 @@
 theme = dracula
-font-family = "VictorMono Nerd Font Mono"
+font-family = "VictorMono Nerd Font Promo"
 # font-family = "CaskaydiaCove Nerd Font"
+# font-family = "Dank Mono"
 font-size = 16
 background-opacity = 0.95
 
