@@ -1,7 +1,7 @@
 local elixir = {}
 
 elixir.name = "elixir"
-elixir.filetypes = { "elixir" }
+elixir.filetypes = { "elixir", "heex", "eex" }
 elixir.fileExts = { "ex", "exs" }
 
 elixir.asciiart = {
@@ -184,20 +184,20 @@ elixir.null_ls = function(null_ls, formatting, diagnostics, completion, code_act
   -- null_ls.register({ sobelow_source })
 
   return {
-    diagnostics.credo.with({
-      filetypes = elixir.filetypes,
-      method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-      command = "mix",
-      args = {
-        "credo",
-        "suggest",
-        "--strict",
-        "json",
-        "--read-from-stdin",
-        "$filename",
-      },
-      extra_args = { "--ignore", "todo" },
-    }),
+    -- diagnostics.credo.with({
+    --   filetypes = elixir.filetypes,
+    --   method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+    --   command = "mix",
+    --   args = {
+    --     "credo",
+    --     "suggest",
+    --     "--strict",
+    --     "json",
+    --     "--read-from-stdin",
+    --     "$filename",
+    --   },
+    --   extra_args = { "--ignore", "todo" },
+    -- }),
   }
 end
 

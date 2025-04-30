@@ -59,8 +59,24 @@ local function plugin_finder(file, name)
   return false
 end
 
+local function table_to_json(o)
+  if type(o) == "table" then
+    local s = "{ "
+    for k, v in pairs(o) do
+      if type(k) ~= "number" then
+        k = '"' .. k .. '"'
+      end
+      s = s .. "[" .. k .. "] = " .. dump(v) .. ","
+    end
+    return s .. "} "
+  else
+    return tostring(o)
+  end
+end
+
 return {
   plugin_finder = plugin_finder,
+  table_to_string = table_to_string,
   notify = {
     error = notify_error,
     info = notify_info,

@@ -3,23 +3,24 @@ local security = {}
 -- TODO: Add this config on each language
 local enable_snyk_languages = {
 	"go",
-	"java",
+	-- "java",
 	"javascript",
-	"elixir",
+	"typescript",
+	-- "elixir",
 	"php",
 	"python",
 }
-
-local enable_solar_languages = {
-	"php",
-	"python",
-	"html",
-	"go",
-	"javascript",
-	"java",
-	"json",
-	"elixir",
-}
+--
+-- local enable_solar_languages = {
+--   "php",
+--   "python",
+--   "html",
+--   "go",
+--   "javascript",
+--   "java",
+--   "json",
+--   "elixir",
+-- }
 
 --------------------------------------------------------------------------------
 -- Plugins ---------------------------------------------------------------------
@@ -29,6 +30,7 @@ security.plugins = {
 	{
 		"schrieveslaach/sonarlint.nvim",
 		url = "https://gitlab.com/schrieveslaach/sonarlint.nvim",
+		enabled = false,
 		lazy = true,
 		dependencies = {
 			"mfussenegger/nvim-jdtls",
@@ -36,6 +38,8 @@ security.plugins = {
 		-- ft = enable_solar_languages,
 	},
 	{
+		-- 1Password integration
+		-- Example: require("op").get_secret("Snyk", "Token")
 		"mrjones2014/op.nvim",
 		build = "make install",
 	},
@@ -47,7 +51,7 @@ security.plugins = {
 
 security.mason = {
 	"snyk_ls",
-	"sonarlint-language-server",
+	--  "sonarlint-language-server",
 }
 
 --------------------------------------------------------------------------------
@@ -63,13 +67,24 @@ security.lsp = function(lspconfig, capabilities, on_attach)
 		filetypes = enable_snyk_languages,
 		cmd = { vim.fn.stdpath("data") .. "/mason/bin/snyk-ls" },
 		root_dir = function(name)
-			return lspconfig.util.find_git_ancestor(name) or vim.loop.os_homedir()
+			return lspconfig.util.find_git_ancestor(name) or lspconfig.util.path.dirname(name)
 		end,
+		-- https://github.com/snyk/snyk-ls
 		init_options = {
-			["token"] = snyk_token,
-			["authenticationMethod"] = "token",
-			["activateSnykIac"] = "false",
-			["activateSnykCode"] = "true",
+			-- The name of the IDE or editor the LS is running in
+			integrationName = "nvim",
+			-- Specifies the authentication method to use: "token" for Snyk API token or "oauth" for Snyk OAuth flow. Default is token.
+			authenticationMethod = "token",
+			--The Snyk token, e.g.: snyk config get api or a token from authentication flow
+			token = snyk_token,
+			-- Enables Infrastructure as Code - defaults to true
+			activateSnykIac = "false",
+			-- Enables Snyk Code, if enabled for your organization - defaults to false, deprecated in favor of specific Snyk Code analysis types
+			activateSnykCode = "true",
+			-- Enables Snyk Code Security reporting
+			activateSnykCodeSecurity = "true",
+			-- Enable Snyk Code Quality issue reporting (Beta, only in IDEs and LS)
+			activateSnykCodeQuality = "true",
 		},
 	})
 end

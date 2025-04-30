@@ -1,17 +1,21 @@
 local markdown = {}
 
+markdown.filetypes = { "markdown" }
+-- { "md", "markdown", "txt", "text" }
+
 --------------------------------------------------------------------------------
 -- Search for local dictionary -------------------------------------------------
 --------------------------------------------------------------------------------
-local function search_dictionary()
-	print("------------->>>>> Buscando Dicionarios em: ")
+-- local function search_dictionary()
+--   print("------------->>>>> Buscando Dicionarios em: ")
+--
+--   -- if vim.fn.filereadable(path) == 1 then
+--   --   return path
+--   -- end
+--   -- return nil
+-- end
+-- -- search_dictionary()
 
-	-- if vim.fn.filereadable(path) == 1 then
-	--   return path
-	-- end
-	-- return nil
-end
--- search_dictionary()
 --------------------------------------------------------------------------------
 -- Create custom dictionary for ltex language server ---------------------------
 --------------------------------------------------------------------------------
@@ -27,6 +31,10 @@ local create_dictionary = function()
 		if not file_exists(dicio_path) then
 			os.execute("mkdir -p " .. dicio_path:match("(.*/)"))
 			local fp = io.open(dicio_path, "w+")
+			if fp == nil then
+				print("Error: Unable to open file for writing.")
+				return
+			end
 			fp:close()
 		end
 	end
@@ -34,21 +42,6 @@ local create_dictionary = function()
 	local add_new_words = function(add_path)
 		for word in io.open(add_path, "r"):lines() do
 			table.insert(words, word)
-		end
-	end
-
-	local function dump(o)
-		if type(o) == "table" then
-			local s = "{ "
-			for k, v in pairs(o) do
-				if type(k) ~= "number" then
-					k = '"' .. k .. '"'
-				end
-				s = s .. "[" .. k .. "] = " .. dump(v) .. ","
-			end
-			return s .. "} "
-		else
-			return tostring(o)
 		end
 	end
 
@@ -78,7 +71,7 @@ markdown.plugins = {
 	-- Emoji support
 	{
 		"junegunn/vim-emoji",
-		ft = { "markdown" },
+		ft = markdown.filetypes,
 		config = function()
 			vim.cmd("set completefunc=emoji#complete")
 		end,
@@ -87,7 +80,7 @@ markdown.plugins = {
 	-- Show hex color in markdown
 	{
 		"norcalli/nvim-colorizer.lua",
-		ft = { "markdown" },
+		ft = markdown.filetypes,
 		config = function()
 			require("colorizer").setup({
 				markdown = {
@@ -110,29 +103,24 @@ markdown.plugins = {
 	{
 		"iamcco/markdown-preview.nvim",
 		-- enabled = false,
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
 		build = "cd app && npm install && git restore .",
+		cmd = {
+			"MarkdownPreviewToggle",
+			"MarkdownPreview",
+			"MarkdownPreviewStop",
+		},
 		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
+			vim.g.mkdp_filetypes = markdown.filetypes
 		end,
-		ft = { "markdown" },
+		ft = markdown.filetypes,
 	},
 
-	-- {
-	--     'MeanderingProgrammer/render-markdown.nvim',
-	--     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-	--     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
-	--     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-	--     ---@module 'render-markdown'
-	--     ---@type render.md.UserConfig
-	--     opts = {},
-	-- },
-
+	-- Markdown Preview on vim visual mode
 	{
 		"OXY2DEV/markview.nvim",
 		enabled = false,
 		lazy = false, -- Recommended
-		ft = "markdown", -- If you decide to lazy-load anyway
+		ft = markdown.filetypes,
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-tree/nvim-web-devicons",
@@ -145,25 +133,6 @@ markdown.plugins = {
 			})
 		end,
 	},
-	-- {
-	-- 	"iamcco/markdown-preview.nvim",
-	-- 	cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-	-- 	build = function()
-	-- 		require("lazy").load({ plugins = { "markdown-preview.nvim" } })
-	-- 		vim.fn["mkdp#util#install"]()
-	-- 	end,
-	-- 	keys = {
-	-- 		{
-	-- 			"<leader>cp",
-	-- 			ft = "markdown",
-	-- 			"<cmd>MarkdownPreviewToggle<cr>",
-	-- 			desc = "Markdown Preview",
-	-- 		},
-	-- 	},
-	-- 	config = function()
-	-- 		vim.cmd([[do FileType]])
-	-- 	end,
-	-- },
 }
 
 --------------------------------------------------------------------------------
@@ -171,8 +140,13 @@ markdown.plugins = {
 --------------------------------------------------------------------------------
 
 markdown.mason = {
+	-- Genetare TOC
 	"marksman",
+
+	-- Spell check
 	"ltex",
+
+	-- Lint
 	"markdownlint",
 }
 
@@ -185,7 +159,7 @@ markdown.lsp = function(lspconfig, capabilities, on_attach)
 	lspconfig.marksman.setup({
 		capabilities = capabilities,
 		on_attach = on_attach,
-		filetypes = { "markdown" },
+		filetypes = markdown.filetypes,
 	})
 
 	-- from:  `npm i -g vscode-langservers-extracted`
@@ -209,7 +183,7 @@ markdown.lsp = function(lspconfig, capabilities, on_attach)
 	lspconfig.ltex.setup({
 		capabilities = capabilities,
 		on_attach = on_attach,
-		filetypes = { "markdown" },
+		filetypes = markdown.filetypes,
 		settings = {
 			ltex = {
 				logLevel = "finest",
@@ -244,7 +218,7 @@ markdown.null_ls = function(null_ls)
 	-- Criar um formatador customizado para Pandoc
 	null_ls.register({
 		method = null_ls.methods.FORMATTING,
-		filetypes = { "markdown" },
+		filetypes = markdown.filetypes,
 		generator = helpers.generator_factory({
 			command = "pandoc",
 			args = {
@@ -272,7 +246,7 @@ markdown.null_ls = function(null_ls)
 	return {
 		-- null_ls.builtins.formatting.markdownlint,
 		null_ls.builtins.diagnostics.markdownlint.with({
-			filetypes = { "markdown" },
+			filetypes = markdown.filetypes,
 			extra_args = {
 				-- "--disable", "MD030"
 			},
@@ -287,7 +261,7 @@ end
 markdown.options = function()
 	--  Enable spell check
 	vim.api.nvim_create_autocmd("FileType", {
-		pattern = { "md", "markdown", "txt", "text" },
+		pattern = markdown.filetypes,
 		callback = function()
 			vim.cmd([[ set nospell ]])
 			vim.cmd([[ set spelllang=pt_br ]])
