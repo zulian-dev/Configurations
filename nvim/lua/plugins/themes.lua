@@ -14,7 +14,7 @@ local afLightTheme = [[
   vim.cmd("set background=light")
 ]]
 
-return {
+local themes = {
 
   { "maxmx03/fluoromachine.nvim",   name = "fluoromachine", colorscheme = "fluoromachine" },
   { "glitchcandy/glitchcandy-nvim", name = "glitchcandy",   colorscheme = "glitchcandy" },
@@ -296,3 +296,11 @@ return {
     dependencies = { "rktjmp/lush.nvim" },
   },
 }
+
+local new_themes = {}
+for _, theme in ipairs(themes) do
+  local updated_theme = vim.tbl_extend("force", theme, { lazy = true })
+  table.insert(new_themes, updated_theme)
+end
+
+return new_themes
