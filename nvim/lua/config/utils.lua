@@ -66,7 +66,7 @@ local function table_to_json(o)
       if type(k) ~= "number" then
         k = '"' .. k .. '"'
       end
-      s = s .. "[" .. k .. "] = " .. dump(v) .. ","
+      s = s .. "[" .. k .. "] = " .. table_to_json(v) .. ","
     end
     return s .. "} "
   else
@@ -76,7 +76,7 @@ end
 
 return {
   plugin_finder = plugin_finder,
-  table_to_string = table_to_string,
+  table_to_json = table_to_json,
   notify = {
     error = notify_error,
     info = notify_info,
