@@ -1,13 +1,3 @@
--- alias mdvim="export NVIMLANG='markdown' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias govim="export NVIMLANG='golang' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias rsvim="export NVIMLANG='rust' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias javim="export NVIMLANG='java' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias elvim="export NVIMLANG='elixir' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias luavim="export NVIMLANG='lua' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias jsvim="export NVIMLANG='javascript' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias gdvim="export NVIMLANG='gdscript' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias cljvim="export NVIMLANG='clojure' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias nvim="unset NVIMLANG && /opt/homebrew/bin/nvim"
 local notify = require("config.utils").notify
 local nvimlang = os.getenv("NVIMLANG")
 
@@ -31,16 +21,32 @@ local disponible_languages = {
   "zig",
 }
 
+local function load_module(lang)
+  if vim.tbl_contains(disponible_languages, lang) then
+    local module_name = "language." .. lang
+    local success, language_module = pcall(require, module_name)
+    if success then
+      notify.info("Language Loader", "Loading language: " .. lang)
+      table.insert(loaded_languages, language_module)
+    else
+      notify.error("Language Loader", "Failed to load language: " .. lang)
+    end
+  else
+    notify.error("Language Loader", "Invalid language: " .. lang)
+  end
+end
+
+-- Read enviroment NVIMLANG, and load each one
 if nvimlang then
   local langs = vim.split(nvimlang, ",")
   for _, lang in ipairs(langs) do
-    notify.info("Language Loader", "Loading language: " .. lang)
-    table.insert(loaded_languages, require("language." .. lang))
+    load_module(lang)
   end
+  -- Load all disponible languages
 else
   notify.info("Language Loader", "Loading all languages")
   for _, lang in ipairs(disponible_languages) do
-    table.insert(loaded_languages, require("language." .. lang))
+    load_module(lang)
   end
 end
 
