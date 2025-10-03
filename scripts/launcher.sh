@@ -18,6 +18,7 @@ vimExecPath="/opt/homebrew/bin/nvim"
 # Function to show dialog options
 function show-options() {
   dialog --checklist "Select the languages you want to code:" 20 40 10 \
+    txt "Text" on \
     markdown "Markdown" off \
     elixir "Elixir" off \
     javascript "Javascript" off \
@@ -32,7 +33,8 @@ function show-options() {
     clojure "Clojure" off \
     php "PHP" off \
     zig "Zig" off \
-    security "Security" on \
+    sql "SQL" off \
+    security "Security" off \
     none "None" off \
     2>$tempfile
 

@@ -18,7 +18,9 @@ local disponible_languages = {
   "python",
   "html",
   "css",
+  "sql",
   "zig",
+  "txt",
 }
 
 local function load_module(lang)

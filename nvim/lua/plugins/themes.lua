@@ -176,14 +176,14 @@ local themes = {
     name = "Github - dark tritanopia",
     colorscheme = "github_dark_tritanopia",
   },
-  { "projekt0n/github-nvim-theme",   name = "Github - dimmed", colorscheme = "github_dimmed" },
+  { "projekt0n/github-nvim-theme", name = "Github - dimmed", colorscheme = "github_dimmed" },
 
   -- Melange
-  { "savq/melange-nvim",             name = "Melange",         colorscheme = "melange" },
+  { "savq/melange-nvim",           name = "Melange",         colorscheme = "melange" },
 
   -- Cyberdream
-  { "scottmckendry/cyberdream.nvim", name = "Cyberdream",      colorscheme = "cyberdream" },
-
+  { "scottmckendry/cyberdream.nvim", name = "Cyberdream",      colorscheme = "cyberdream" , lazy = false, priority = 1000,},
+  
   -- Bluloco
   {
     "uloco/bluloco.nvim",

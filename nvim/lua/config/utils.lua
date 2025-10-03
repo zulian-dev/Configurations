@@ -74,9 +74,32 @@ local function table_to_json(o)
   end
 end
 
+local function file_exists(name)
+  local f = io.open(name, "r")
+  if f ~= nil then
+    io.close(f)
+    return true
+  else
+    return false
+  end
+end
+
+local function file_get_content(file)
+  local f = io.open(file, "r")
+  if f ~= nil then
+    local content = f:read("*a")
+    io.close(f)
+    return content
+  else
+    return nil
+  end
+end
+
 return {
   plugin_finder = plugin_finder,
   table_to_json = table_to_json,
+  file_exists = file_exists,
+  file_get_content = file_get_content,
   notify = {
     error = notify_error,
     info = notify_info,

@@ -22,6 +22,10 @@ local typescript_filetypes = {
   "typescript.tsx",
 }
 
+local vue_filetypes = {
+  "vue",
+}
+
 --------------------------------------------------------------------------------
 -- Plugins ---------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -35,6 +39,7 @@ javascript.plugins = {
   {
     "mxsdev/nvim-dap-vscode-js",
     -- build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+    enabled = false,
   },
   {
     "pmizio/typescript-tools.nvim",
@@ -96,10 +101,14 @@ javascript.mason = {
   "prettier",
   -- "tsserver",
   "typescript-language-server",
-  "emmet_ls",
+  -- "emmet_ls",
 
   -- Debbug
-  "js-debug-adapter",
+  -- "js-debug-adapter",
+
+  -- Vue
+  -- "vue-language-server",
+  "volar",
 }
 
 --------------------------------------------------------------------------------
@@ -107,10 +116,13 @@ javascript.mason = {
 --------------------------------------------------------------------------------
 
 javascript.lsp = function(lspconfig, capabilities, on_attach)
-  local mason_registry = require("mason-registry")
+  -- local mason_registry = require("mason-registry")
+  -- local vue_lsp = mason_registry.get_package("vue-language-server")
 
-  local vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
-      .. "/node_modules/@vue/language-server"
+  -- require("config.utils").notify.debug("VUELSP", vue_lsp)
+
+  -- local vue_language_server_path = vue_lsp:get_install_path() .. "/node_modules/@vue/language-server"
+  -- local vue_language_server_path = ""
 
   lspconfig.tsserver.setup({
     capabilities = capabilities,
@@ -120,13 +132,13 @@ javascript.lsp = function(lspconfig, capabilities, on_attach)
     cmd = { vim.fn.expand("$MASON/bin/typescript-language-server"), "--stdio" },
 
     init_options = {
-      plugins = {
-        {
-          name = "@vue/typescript-plugin",
-          location = vue_language_server_path,
-          languages = { "vue" },
-        },
-      },
+      -- plugins = {
+      -- 	{
+      -- 		name = "@vue/typescript-plugin",
+      -- 		location = vue_language_server_path,
+      -- 		languages = { "vue" },
+      -- 	},
+      -- },
     },
     --  init_options = {
     --  	typescript = {
@@ -135,6 +147,17 @@ javascript.lsp = function(lspconfig, capabilities, on_attach)
     --  		},
     --  	},
     --  },
+  })
+
+  lspconfig.volar.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+    filetypes = vue_filetypes,
+    init_options = {
+      vue = {
+        hybridMode = true,
+      },
+    },
   })
 
   -- from:  `npm i -g vscode-langservers-extracted`

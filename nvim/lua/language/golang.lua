@@ -53,9 +53,9 @@ golang.lsp = function(lspconfig, capabilities, on_attach)
 		filetypes = { "go" }, --golang.filetypes,
 	})
 
-	-- require("language.security").tools.enable_sonarlint_analyzer(
-	-- 	vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar")
-	-- )
+  -- require("language.security").tools.enable_sonarlint_analyzer(
+  --   vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar")
+  -- )
 end
 
 --------------------------------------------------------------------------------
