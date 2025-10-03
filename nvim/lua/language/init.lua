@@ -28,7 +28,9 @@ local disponible_languages = {
   "python",
   "html",
   "css",
+  "sql",
   "zig",
+  "txt",
 }
 
 if nvimlang then

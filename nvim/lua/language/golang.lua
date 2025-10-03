@@ -42,9 +42,9 @@ golang.lsp = function(lspconfig, capabilities, on_attach)
     filetypes = { "go" },
   })
 
-  require("language.security").tools.enable_sonarlint_analyzer(
-    vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar")
-  )
+  -- require("language.security").tools.enable_sonarlint_analyzer(
+  --   vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar")
+  -- )
 end
 
 --------------------------------------------------------------------------------
@@ -61,13 +61,13 @@ end
 
 golang.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
   return {
-    formatting.gofmt,
-    formatting.goimports,
-    formatting.gofumpt,
+    formatting.gofmt,        -- a
+    formatting.goimports,    -- b
+    formatting.gofumpt,      -- c
 
-    diagnostics.staticcheck,
+    diagnostics.staticcheck, -- d
 
-    code_actions.gomodifytags,
+    code_actions.gomodifytags, -- end
     code_actions.impl,
   }
 end

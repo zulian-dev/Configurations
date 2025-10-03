@@ -28,6 +28,9 @@ vim.cmd("set autoread")        --  Update vim after file update from outside
 vim.cmd("set mouse=a")         --  Enable mouse support
 vim.cmd("set list")            --  Show special characters
 vim.cmd("set t_Co=256")        --  256 colors
+vim.cmd("set conceallevel=0")  --  
+vim.cmd('set concealcursor=""') --  
+
 -- vim.cmd("set nobackup=nowritebackup") --  No backup files
 -- vim.cmd("set foldmethod=indent") --  Fold based on indentation
 -- vim.cmd("set listchars=eol:↲,tab:»-,trail:~,extends:>,precedes:<,space:·") --  Show special characters
