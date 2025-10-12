@@ -108,7 +108,7 @@ javascript.mason = {
 
   -- Vue
   -- "vue-language-server",
-  "volar",
+  -- "volar",
 }
 
 --------------------------------------------------------------------------------
@@ -149,16 +149,16 @@ javascript.lsp = function(lspconfig, capabilities, on_attach)
     --  },
   })
 
-  lspconfig.volar.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    filetypes = vue_filetypes,
-    init_options = {
-      vue = {
-        hybridMode = true,
-      },
-    },
-  })
+  -- lspconfig.volar.setup({
+  --   capabilities = capabilities,
+  --   on_attach = on_attach,
+  --   filetypes = vue_filetypes,
+  --   init_options = {
+  --     vue = {
+  --       hybridMode = true,
+  --     },
+  --   },
+  -- })
 
   -- from:  `npm i -g vscode-langservers-extracted`
   lspconfig.eslint.setup({

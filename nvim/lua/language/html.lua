@@ -11,7 +11,7 @@ html.filetypes = {
   "html",
   "heex",
   "php",
-  "elixir", "eelixir", "heex"
+  "elixir", "eelixir"
 }
 
 --------------------------------------------------------------------------------
