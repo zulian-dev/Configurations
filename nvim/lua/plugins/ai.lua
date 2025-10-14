@@ -102,7 +102,7 @@ local codecompanion_security_output = [[
 local join_prompts = function(...)
 	local t = { ... }
 	local joined = table.concat(t, "\n\n")
-	require("config.utils").notify.debug("code_opts", joined)
+	-- require("config.utils").notify.debug("code_opts", joined)
 	return joined
 end
 
@@ -141,7 +141,7 @@ return {
 				-- codecompanion_security,
 			}, "\n\n")
 
-			require("config.utils").notify.debug("code_opts", original_system_prompt)
+			-- require("config.utils").notify.debug("code_opts", original_system_prompt)
 
 			vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
 			vim.keymap.set(
