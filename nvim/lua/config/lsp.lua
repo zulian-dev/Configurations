@@ -8,8 +8,8 @@
 -- so in ~.config/lsp/lua_ls.lua for lua_ls, for example.
 
 -- vim.lsp.enable("lua_ls")
-require("language.lua").lsp(vim.lsp)
-require("language.elixir").lsp(vim.lsp)
+require("language.lua").native_lsp(vim.lsp)
+require("language.elixir").native_lsp(vim.lsp)
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)

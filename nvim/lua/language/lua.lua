@@ -13,7 +13,7 @@ lualang.mason = {
 -- LSP -------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-lualang.lsp = function(lsp)
+lualang.native_lsp = function(lsp)
 	return lsp.enable({
 		-- Command and arguments to start the server.
 		cmd = { "$mason/bin/lua-language-server" },

@@ -63,7 +63,7 @@ elixir.mason = {
 -- LSP -------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-elixir.lsp = function(lsp)
+elixir.native_lsp = function(lsp)
 	-- require("config.utils").notify.warn("cmd", vim.fn.expand("$MASON/bin/lua-language-server"))
 	lsp.config("expert", {
 		cmd = {
