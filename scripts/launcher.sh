@@ -36,18 +36,18 @@ function show-options() {
     sql "SQL" off \
     security "Security" off \
     none "None" off \
-    2>$tempfile
+    2>"$tempfile"
 
   # Verificar se o usuário cancelou ou pressionou ESC
-  if [ $? -ne 0 ]; then
+  if [ "$?" -ne 0 ]; then
     clean-temp-file
     clear
     exit 0
   fi
 
-  if [[ $(cat $tempfile) == "" ]]; then
+  if [[ $(cat "$tempfile") == "" ]]; then
     dialog --yesno "No options selected. Do you want to select root?" 10 40
-    if [ $? -eq 0 ]; then
+    if [ "$?" -eq 0 ]; then
       open-vim
     else
       show-options
@@ -61,7 +61,7 @@ function show-options() {
 # Function to launch nvim with the selected languages
 # inside an env variable in this format "php,html,javascript,css"
 function lauche-nvim() {
-  langsFormated=$(cat $tempfile | sed 's/\ /\,/g')
+  langsFormated=$(cat "$tempfile" | sed 's/\ /\,/g')
   export NVIMLANG=$langsFormated
   open-vim
   unset NVIMLANG
@@ -69,9 +69,9 @@ function lauche-nvim() {
 
 function open-vim() {
   clear
-  $vimExecPath $originalArguments
+  $vimExecPath "$originalArguments"
 }
 
 show-options
 
-rm $tempfile
+rm "$tempfile"
