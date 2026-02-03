@@ -1,8 +1,19 @@
 local test = [=====[
+#
+# GLOBALS
+#
 
-// Globals
+# Host
 http://localhost:3000
-Accept: application/json
+
+## curl options
+--silent
+
+# Headers
+Accept: application/json;
+Connection: keep-alive
+Content-Type: application/json; charset=utf-8
+
 --
 
 #
@@ -69,8 +80,9 @@ end
 return {
 	{
 		"diepm/vim-rest-console",
+		ft = { "http", "rest" },
+		lazy = false,
 		keys = {
-
 			{ "<leader>j", group = "API", desc = " API", icon = "󱂛 " }, -- group
 			{
 				"<leader>jp",
@@ -97,6 +109,14 @@ return {
 				mode = { "n" },
 				buffer = true,
 			},
+			{
+				"<leader>jj",
+				function()
+					vim.cmd("call VrcQuery()")
+				end,
+				desc = "Run API request under cursor",
+				mode = { "n", "v" },
+			},
 		},
 
 		config = function()
@@ -104,6 +124,12 @@ return {
 
 			vim.g.vrc_curl_opts = {
 				["-i"] = "", -- Show curl headers
+			}
+			vim.g.vrc_set_default_mappings = 0
+			vim.g.vrc_response_default_content_type = "application/json"
+			vim.g.vrc_output_buffer_name = "_OUTPUT.json"
+			vim.g.vrc_auto_format_response_patterns = {
+				json = "jq",
 			}
 		end,
 	},
