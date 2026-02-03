@@ -1,7 +1,9 @@
 local elixir = {}
 
 elixir.name = "elixir"
-elixir.filetypes = { "elixir", "heex", "eex" }
+elixir.filetypes = { "elixir", "eelixir", "heex" }
+elixir.root_markers = { "mix.exs", ".git" }
+
 elixir.fileExts = { "ex", "exs" }
 
 elixir.asciiart = {
@@ -65,14 +67,15 @@ elixir.mason = {
 
 elixir.native_lsp = function(lsp)
 	-- require("config.utils").notify.warn("cmd", vim.fn.expand("$MASON/bin/lua-language-server"))
-	lsp.config("expert", {
+	vim.lsp.config("expert", {
 		cmd = {
 			vim.fn.expand("$MASON/bin/expert"),
 		},
-		root_markers = { "mix.exs", ".git" },
-		filetypes = { "elixir", "eelixir", "heex" },
+		root_markers = elixir.root_markers,
+		filetypes = elixir.filetypes,
 	})
-	lsp.enable("expert")
+
+	vim.lsp.enable("expert")
 end
 
 --------------------------------------------------------------------------------

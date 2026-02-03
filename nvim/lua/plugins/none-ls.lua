@@ -43,7 +43,7 @@ return {
 		-- })
 	end,
 	config = function(config, opts)
-		require("config.utils").notify.info("null-ls.nvim", opts.sources)
+		-- require("config.utils").notify.info("null-ls.nvim", opts.sources)
 
 		local null_ls = require("null-ls")
 		local formatting = null_ls.builtins.formatting
